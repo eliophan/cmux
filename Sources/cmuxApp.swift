@@ -250,6 +250,67 @@ struct cmuxApp: App {
                 InstallUpdateMenuItem(model: appDelegate.updateViewModel)
             }
 
+            CommandGroup(replacing: .help) {
+                Button(String(localized: "sidebar.help.welcome", defaultValue: "Welcome to cmux!")) {
+                    AppDelegate.shared?.openWelcomeWorkspace()
+                }
+
+                Button(String(localized: "sidebar.help.sendFeedback", defaultValue: "Send Feedback")) {
+                    FeedbackComposerBridge.openComposer()
+                }
+
+                Divider()
+
+                Button(String(localized: "settings.section.keyboardShortcuts", defaultValue: "Keyboard Shortcuts")) {
+                    if let appDelegate = AppDelegate.shared {
+                        appDelegate.openPreferencesWindow(
+                            debugSource: "menu.help.keyboardShortcuts",
+                            navigationTarget: .keyboardShortcuts
+                        )
+                    } else {
+                        AppDelegate.presentPreferencesWindow(navigationTarget: .keyboardShortcuts)
+                    }
+                }
+
+                Divider()
+
+                if let docsURL = URL(string: "https://cmux.dev/docs") {
+                    Button(String(localized: "about.docs", defaultValue: "Docs")) {
+                        NSWorkspace.shared.open(docsURL)
+                    }
+                }
+
+                if let changelogURL = URL(string: "https://cmux.dev/docs/changelog") {
+                    Button(String(localized: "sidebar.help.changelog", defaultValue: "Changelog")) {
+                        NSWorkspace.shared.open(changelogURL)
+                    }
+                }
+
+                if let githubURL = URL(string: "https://github.com/manaflow-ai/cmux") {
+                    Button(String(localized: "about.github", defaultValue: "GitHub")) {
+                        NSWorkspace.shared.open(githubURL)
+                    }
+                }
+
+                if let githubIssuesURL = URL(string: "https://github.com/manaflow-ai/cmux/issues") {
+                    Button(String(localized: "sidebar.help.githubIssues", defaultValue: "GitHub Issues")) {
+                        NSWorkspace.shared.open(githubIssuesURL)
+                    }
+                }
+
+                if let discordURL = URL(string: "https://discord.gg/xsgFEVrWCZ") {
+                    Button(String(localized: "sidebar.help.discord", defaultValue: "Discord")) {
+                        NSWorkspace.shared.open(discordURL)
+                    }
+                }
+
+                Divider()
+
+                Button(String(localized: "command.checkForUpdates.title", defaultValue: "Check for Updates")) {
+                    AppDelegate.shared?.checkForUpdates(nil)
+                }
+            }
+
 #if DEBUG
             CommandMenu("Update Pill") {
                 Button("Show Update Pill") {
