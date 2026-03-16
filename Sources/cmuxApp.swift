@@ -37,6 +37,7 @@ struct cmuxApp: App {
     @AppStorage(KeyboardShortcutSettings.Action.renameWorkspace.defaultsKey) private var renameWorkspaceShortcutData = Data()
     @AppStorage(KeyboardShortcutSettings.Action.openFolder.defaultsKey) private var openFolderShortcutData = Data()
     @AppStorage(KeyboardShortcutSettings.Action.closeWorkspace.defaultsKey) private var closeWorkspaceShortcutData = Data()
+    @AppStorage(KeyboardShortcutSettings.Action.sendFeedback.defaultsKey) private var sendFeedbackShortcutData = Data()
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     init() {
@@ -255,7 +256,10 @@ struct cmuxApp: App {
                     AppDelegate.shared?.openWelcomeWorkspace()
                 }
 
-                Button(String(localized: "sidebar.help.sendFeedback", defaultValue: "Send Feedback")) {
+                splitCommandButton(
+                    title: String(localized: "sidebar.help.sendFeedback", defaultValue: "Send Feedback"),
+                    shortcut: sendFeedbackMenuShortcut
+                ) {
                     FeedbackComposerBridge.openComposer()
                 }
 
@@ -845,6 +849,13 @@ struct cmuxApp: App {
         decodeShortcut(
             from: closeWorkspaceShortcutData,
             fallback: KeyboardShortcutSettings.Action.closeWorkspace.defaultShortcut
+        )
+    }
+
+    private var sendFeedbackMenuShortcut: StoredShortcut {
+        decodeShortcut(
+            from: sendFeedbackShortcutData,
+            fallback: KeyboardShortcutSettings.Action.sendFeedback.defaultShortcut
         )
     }
 
